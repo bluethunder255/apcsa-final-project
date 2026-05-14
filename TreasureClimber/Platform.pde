@@ -1,0 +1,3 @@
+class Platform{
+  int w;
+}
