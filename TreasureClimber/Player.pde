@@ -1,19 +1,40 @@
 class Player{
-  PVector location, velocity, acceleration;
+  PVector location, velocity, gravity;
+  final int radius = 25;
   
   Player(){
-    location = new PVector(720, 100);
-    velocity = new PVector(0, 0);
-    acceleration = new PVector(0, 0);
+    location = new PVector(width / 2, height * 0.8);
+    velocity = new PVector(1, 0);
+    gravity = new PVector(0, 1);
   }
   
   void move(){
+    velocity.add(gravity);
+    location.add(velocity);
+    gravity.mult(0);
+  }
+  
+  void bounce(){
+    if (location.x <= radius){
+      velocity.x *= -1;
+      location.x = radius;
+    }
+    if (location.x >= width - radius){
+      velocity.x *= -1;
+      location.x = width - radius;
+    }
   }
   
   void display(){
     stroke(1);
     strokeWeight(2);
     fill(0, 200, 0);
-    circle(location.x, location.y, 50);
+    circle(location.x, location.y, radius * 2);
+  }
+  
+  void keyPressed(){
+    //if (keyCode == ' ') velocity.x *= -1;
+    //if (keyCode == LEFT) velocity.x *= -1;
+    //if (keyCode == RIGHT) velocity.x *= -1;
   }
 }
