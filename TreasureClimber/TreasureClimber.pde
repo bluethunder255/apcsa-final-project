@@ -1,5 +1,5 @@
 Player player;
-ArrayList<Platform> platforms;
+ArrayList<Platform> platforms = new ArrayList<>();
 int score, highScore;
 int coinsCollected;
   
@@ -7,23 +7,31 @@ void setup(){
   size(960, 720);
   player = new Player();
   player.display();
+  for (int i = 0; i < 21; i++){
+    platforms.add(new Platform(new PVector(25 + 135 * (i % 7), 540 - 180 * (i / 7))));
+  }
+  score = highScore = 0;
+  coinsCollected = 0;
 }
 
 void draw(){
   background(100, 50, 0);
-  //for (Platform p : platforms){
-    //p.display();
-  //}
+  for (Platform p : platforms){
+    p.display();
+  }
   //nextFloor();
   player.move();
   player.bounce();
   player.display();
   fill(255);
-  text(1, 20, 40);
+  textSize(20);
+  text("Coins: " + coinsCollected, 20, 40);
+  //text("Score: " + score, 20, 40);
+  //text("Highscore: " + score, 800, 40);
 }
 
 void nextFloor(){
-  for (int i = 0; i < 1; i++){
+  for (int i = 0; i < 7; i++){
     //platforms.add(new Platform(new PVector(100, 100), 50));
   }
 }

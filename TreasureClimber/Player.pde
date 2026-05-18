@@ -1,17 +1,20 @@
 class Player{
   PVector location, velocity, gravity;
-  final int radius = 25;
+  final int radius = 30;
   
   Player(){
-    location = new PVector(width / 2, height * 0.8);
+    location = new PVector(width / 2, height * 0.4);
     velocity = new PVector(1, 0);
     gravity = new PVector(0, 1);
   }
   
   void move(){
-    velocity.add(gravity);
-    location.add(velocity);
-    gravity.mult(0);
+    if (location.y > height / 2){
+      velocity.add(gravity);
+      location.add(velocity);
+      gravity.mult(0);
+    }
+    else location.y = height / 2;
   }
   
   void bounce(){
@@ -33,7 +36,7 @@ class Player{
   }
   
   void keyPressed(){
-    //if (keyCode == ' ') velocity.x *= -1;
+    if (key == ' ') velocity.x *= -1;
     //if (keyCode == LEFT) velocity.x *= -1;
     //if (keyCode == RIGHT) velocity.x *= -1;
   }

@@ -3,9 +3,11 @@ class Platform{
   int size;
   //String type;
   
-  Platform(PVector l, int s){
+  
+  Platform(PVector l){
     location = l;
-    size = s;
+    size = 100;
+    //size = int(random(50)) + 50;
   }
   
   void display(){
