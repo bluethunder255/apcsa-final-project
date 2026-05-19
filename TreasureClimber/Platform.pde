@@ -3,17 +3,20 @@ class Platform{
   int size;
   //String type;
   
-  
   Platform(PVector l){
     location = l;
-    size = 100;
-    //size = int(random(50)) + 50;
+    size = int(random(40)) + 50;
   }
   
   void display(){
     stroke(1);
     strokeWeight(2);
     fill(50, 25, 0);
-    rect(location.x, location.y, size, 10, 1);
+    rectMode(CENTER);
+    rect(location.x, location.y, size, 10, 2);
+  }
+  
+  void scroll(){
+    location.y += 1;
   }
 }

@@ -2,13 +2,14 @@ Player player;
 ArrayList<Platform> platforms = new ArrayList<>();
 int score, highScore;
 int coinsCollected;
-  
+
 void setup(){
   size(960, 720);
   player = new Player();
   player.display();
+  platforms.add(new Platform(new PVector(width / 2, height * 0.95)));
   for (int i = 0; i < 21; i++){
-    platforms.add(new Platform(new PVector(25 + 135 * (i % 7), 540 - 180 * (i / 7))));
+    platforms.add(new Platform(new PVector(90 + 130 * (i % 7), 540 - 180 * (i / 7))));
   }
   score = highScore = 0;
   coinsCollected = 0;
@@ -32,6 +33,10 @@ void draw(){
 
 void nextFloor(){
   for (int i = 0; i < 7; i++){
-    //platforms.add(new Platform(new PVector(100, 100), 50));
+    platforms.add(new Platform(new PVector(100, 100)));
   }
+}
+
+void keyPressed(){
+  player.reverse();
 }
