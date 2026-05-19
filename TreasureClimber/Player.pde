@@ -4,7 +4,7 @@ class Player{
   
   Player(){
     location = new PVector(width / 2, height * 0.9);
-    velocity = new PVector(1, -20);
+    velocity = new PVector(1, -1);
     gravity = new PVector(0, 1);
   }
   
@@ -12,7 +12,7 @@ class Player{
     if (location.y > height / 2){
       velocity.add(gravity);
       location.add(velocity);
-      //gravity.mult(0);
+      gravity.mult(0);
     }
     else{
       location.y = height / 2;
