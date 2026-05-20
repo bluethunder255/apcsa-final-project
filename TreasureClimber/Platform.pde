@@ -5,8 +5,12 @@ class Platform{
   
   Platform(PVector l){
     location = l;
-    size = int(random(40)) + 50;
+    size = int(random(30)) + 50;
   }
+  
+  //void scroll(float amount){
+    //location.y += amount;
+  //}
   
   void display(){
     stroke(1);
@@ -14,9 +18,5 @@ class Platform{
     fill(50, 25, 0);
     rectMode(CENTER);
     rect(location.x, location.y, size, 10, 2);
-  }
-  
-  void scroll(){
-    location.y += 1;
   }
 }

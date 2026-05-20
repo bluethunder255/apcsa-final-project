@@ -4,23 +4,17 @@ class Player{
   
   Player(){
     location = new PVector(width / 2, height * 0.9);
-    velocity = new PVector(1, -1);
-    gravity = new PVector(0, 1);
+    velocity = new PVector(3, -15);
+    gravity = new PVector(0, 0.5);
   }
   
   void move(){
-    if (location.y > height / 2){
-      velocity.add(gravity);
-      location.add(velocity);
-      gravity.mult(0);
-    }
-    else{
-      location.y = height / 2;
-      //Platform.scroll();
-    }
+    velocity.add(gravity);
+    location.add(velocity);
+    //if (location.y < height / 2 && velocity.y < 0) location.y = height / 2;
   }
   
-  void bounce(){
+  void edgeBounce(){
     if (location.x <= radius){
       velocity.x *= -1;
       location.x = radius;
@@ -29,23 +23,31 @@ class Player{
       velocity.x *= -1;
       location.x = width - radius;
     }
-    /* if (location.y == platform.location.y && velocity.y > 0){
-      velocity.y *= -1;
-      location.y = platform.location.y;
+  }
+  
+  void platformBounce(Platform platform){
+    if (velocity.y > 0){
+      float platformLeft = platform.location.x - platform.size / 2;
+      float platformRight = platform.location.x + platform.size / 2;
+      float platformTop = platform.location.y - 5;
+      float platformBottom = platform.location.y + 5;
+      if (location.x + radius > platformLeft && location.x - radius < platformRight){
+        if (location.y + radius >= platformTop && location.y < platformBottom){
+          velocity.y = -15;
+          location.y = platformTop - radius;
+        }
+      }
     }
-    */
+  }
+  
+  void changeDirection(){
+    if (key == ' ') velocity.x *= -1;
   }
   
   void display(){
-    stroke(1);
+    stroke(0);
     strokeWeight(2);
     fill(0, 200, 0);
     circle(location.x, location.y, radius * 2);
-  }
-  
-  void reverse(){
-    if (key == ' ') velocity.x *= -1;
-    //if (keyCode == LEFT) velocity.x *= -1;
-    //if (keyCode == RIGHT) velocity.x *= -1;
   }
 }
