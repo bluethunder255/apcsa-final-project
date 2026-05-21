@@ -1,17 +1,24 @@
 class Player{
   PVector location, velocity, gravity;
-  final int radius = 30;
+  int radius = 30;
   
   Player(){
     location = new PVector(width / 2, height * 0.9);
-    velocity = new PVector(3, -15);
-    gravity = new PVector(0, 0.5);
+    velocity = new PVector(0, 0);
+    gravity = new PVector(0, 0);
+  }
+  
+  void play(){
+    if (velocity.mag() == 0){
+      velocity.add(-3, -15);
+      gravity.add(0, 0.5);
+    }
   }
   
   void move(){
     velocity.add(gravity);
     location.add(velocity);
-    //if (location.y < height / 2 && velocity.y < 0) location.y = height / 2;
+    if (location.y < height / 2 && velocity.y < 0) location.y = height / 2;
   }
   
   void edgeBounce(){
@@ -25,7 +32,7 @@ class Player{
     }
   }
   
-  void platformBounce(Platform platform){
+  void platformInteraction(Platform platform){
     if (velocity.y > 0){
       float platformLeft = platform.location.x - platform.size / 2;
       float platformRight = platform.location.x + platform.size / 2;
@@ -38,6 +45,7 @@ class Player{
         }
       }
     }
+    else if (location.y <= height / 2 && velocity.y < 0) platform.scroll(velocity.y);
   }
   
   void changeDirection(){

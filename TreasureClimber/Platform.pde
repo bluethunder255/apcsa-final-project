@@ -1,16 +1,18 @@
 class Platform{
   PVector location;
+  int floor;
   int size;
   //String type;
   
-  Platform(PVector l){
+  Platform(PVector l, int f){
     location = l;
+    floor = f;
     size = int(random(30)) + 50;
   }
   
-  //void scroll(float amount){
-    //location.y += amount;
-  //}
+  void scroll(float amount){
+    location.y -= amount;
+  }
   
   void display(){
     stroke(1);
