@@ -10,7 +10,7 @@ class Player{
   
   void play(){
     if (velocity.mag() == 0){
-      velocity.add(-3, -15);
+      velocity.add(-5, -15);
       gravity.add(0, 0.5);
     }
   }
@@ -45,7 +45,7 @@ class Player{
         }
       }
     }
-    else if (location.y <= height / 2 && velocity.y < 0) platform.scroll(velocity.y);
+    else if (location.y <= height / 2 && velocity.y < 0) platform.scroll(-velocity.y);
   }
   
   void changeDirection(){

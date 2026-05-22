@@ -11,7 +11,7 @@ class Platform{
   }
   
   void scroll(float amount){
-    location.y -= amount;
+    location.y += amount;
   }
   
   void display(){
