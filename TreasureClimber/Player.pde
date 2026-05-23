@@ -10,7 +10,7 @@ class Player{
   
   void play(){
     if (velocity.mag() == 0){
-      velocity.add(-5, -15);
+      velocity.add(-6, -15);
       gravity.add(0, 0.5);
     }
   }

@@ -13,12 +13,12 @@ void setup(){
   colWidth = width / totalCols;
   currentFloor = 0;
   floorHeight = 175;
-  platforms.add(new Platform(new PVector(width / 2, height * 0.95), currentFloor++));
+  platforms.add(new Platform(new PVector(width / 2, height * 0.95), currentFloor));
   for (int i = 0; i < totalCols * 3; i++){
     int col = i % totalCols;
     float x = col * colWidth + colWidth / 2;
     float y = height * 0.7 - i / totalCols * floorHeight;
-    currentFloor = i / totalCols;
+    currentFloor = i / totalCols + 1;
     platforms.add(new Platform(new PVector(x, y), currentFloor));
   }
   score = highScore = 0;
