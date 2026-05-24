@@ -31,9 +31,9 @@ class Platform{
     fill(50, 25, 0);
     rectMode(CENTER);
     rect(location.x, location.y, size, 10, 2);
-    fill(255);
-    textSize(10);
-    text(floor, location.x, location.y);
+    //fill(255);
+    //textSize(10);
+    //text(floor, location.x, location.y);
     if (coin != null) coin.display();
   }
 }
