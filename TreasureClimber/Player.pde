@@ -48,6 +48,24 @@ class Player{
     else if (location.y <= height / 2 && velocity.y < 0) platform.scroll(-velocity.y);
   }
   
+  int collectCoin(Platform platform){
+    int quantity = 0;
+    Coin coin = platform.getCoin();
+    if (coin != null){
+      float coinLeft = coin.location.x - 10;
+      float coinRight = coin.location.x + 10;
+      float coinTop = coin.location.y - 10;
+      float coinBottom = coin.location.y + 10;
+      if (location.x + radius > coinLeft && location.x - radius < coinRight){
+        if (location.y + radius >= coinTop && location.y < coinBottom){
+          quantity = coin.getQuantity();
+          platform.removeItem();
+        }
+      }
+    }
+    return quantity;
+  }
+  
   void changeDirection(){
     if (key == ' ') velocity.x *= -1;
   }
