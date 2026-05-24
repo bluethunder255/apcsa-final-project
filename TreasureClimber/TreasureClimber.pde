@@ -3,7 +3,6 @@ ArrayList<Platform> platforms;
 int totalCols, currentFloor;
 float colWidth, floorHeight;
 int score, highScore;
-int coinsCollected;
 float coinChance;
 
 void setup(){
@@ -22,7 +21,6 @@ void setup(){
     platforms.add(new Platform(new PVector(x, y), i / totalCols + 1, 0.4));
   }
   score = highScore = 0;
-  coinsCollected = 0;
 }
 
 void draw(){
@@ -31,7 +29,7 @@ void draw(){
   player.edgeBounce();
   for (Platform platform : platforms){
     player.platformInteraction(platform);
-    coinsCollected += player.collectCoin(platform);
+    player.collectItem(platform);
     platform.display();
   }
   player.display();
@@ -39,7 +37,7 @@ void draw(){
   nextFloor();
   fill(255);
   textSize(20);
-  text("Coins: " + coinsCollected, 20, 40);
+  text("Coins: " + player.getCoins(), 20, 40);
   text("Floor: " + currentFloor, 20, 80);
   text("Highscore: " + highScore, 800, 40);
 }
@@ -64,7 +62,7 @@ void keyPressed(){
 }
 
 void reset(){
-  highScore = currentFloor + coinsCollected;
+  highScore = currentFloor + player.getCoins();
   player = new Player();
   platforms = new ArrayList<>();
   totalCols = 7;
@@ -79,5 +77,4 @@ void reset(){
     platforms.add(new Platform(new PVector(x, y), i / totalCols + 1, 0.4));
   }
   score = 0;
-  coinsCollected = 0;
 }

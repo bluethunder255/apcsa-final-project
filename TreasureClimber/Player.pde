@@ -1,11 +1,17 @@
 class Player{
   PVector location, velocity, gravity;
   int radius = 30;
+  int coinsCollected = 0;
+  String currentPower;
   
   Player(){
     location = new PVector(width / 2, height * 0.9);
     velocity = new PVector(0, 0);
     gravity = new PVector(0, 0);
+  }
+  
+  int getCoins(){
+    return coinsCollected;
   }
   
   void play(){
@@ -48,22 +54,36 @@ class Player{
     else if (location.y <= height / 2 && velocity.y < 0) platform.scroll(-velocity.y);
   }
   
-  int collectCoin(Platform platform){
-    int quantity = 0;
-    Coin coin = platform.getCoin();
-    if (coin != null){
-      float coinLeft = coin.location.x - 10;
-      float coinRight = coin.location.x + 10;
-      float coinTop = coin.location.y - 10;
-      float coinBottom = coin.location.y + 10;
-      if (location.x + radius > coinLeft && location.x - radius < coinRight){
-        if (location.y + radius >= coinTop && location.y < coinBottom){
-          quantity = coin.getQuantity();
+  void collectItem(Platform platform){
+    Item i = platform.getItem();
+    if (i != null){
+      float iLeft = i.location.x - 10;
+      float iRight = i.location.x + 10;
+      float iTop = i.location.y - 10;
+      float iBottom = i.location.y + 10;
+      if (location.x + radius > iLeft && location.x - radius < iRight){
+        if (location.y + radius >= iTop && location.y < iBottom){
+          if (i instanceof Coin) coinsCollected += collectCoins(i);
+          if (i instanceof Powerup) collectPower(i);
           platform.removeItem();
         }
       }
     }
-    return quantity;
+  }
+  
+  int collectCoins(Item i){
+    Coin c = (Coin) i;
+    return c.getQuantity();
+  }
+  
+  void collectPower(Item item){
+    Powerup power = (Powerup) item;
+    String type = power.getType();
+    currentPower = type;
+  }
+  
+  void power(){
+    //if (currentPower.equals("timer")) return;
   }
   
   void changeDirection(){
