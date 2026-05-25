@@ -13,7 +13,7 @@ void setup(){
   colWidth = width / totalCols;
   currentFloor = 0;
   floorHeight = 175;
-  platforms.add(new Platform(new PVector(width / 2, height * 0.95), currentFloor, 0));
+  platforms.add(new Platform());
   for (int i = 0; i < totalCols * 3; i++){
     int col = i % totalCols;
     float x = col * colWidth + colWidth / 2;
@@ -62,7 +62,7 @@ void keyPressed(){
 }
 
 void reset(){
-  highScore = currentFloor + player.getCoins();
+  highScore = max(highScore, currentFloor + player.getCoins());
   player = new Player();
   platforms = new ArrayList<>();
   totalCols = 7;

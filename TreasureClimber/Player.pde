@@ -2,7 +2,7 @@ class Player{
   PVector location, velocity, gravity;
   int radius = 30;
   int coinsCollected = 0;
-  String currentPower;
+  float timeScale = 1.0;
   
   Player(){
     location = new PVector(width / 2, height * 0.9);
@@ -22,8 +22,8 @@ class Player{
   }
   
   void move(){
-    velocity.add(gravity);
-    location.add(velocity);
+    velocity.add(gravity.copy().mult(timeScale));
+    location.add(velocity.copy().mult(timeScale));
     if (location.y < height / 2 && velocity.y < 0) location.y = height / 2;
   }
   
@@ -51,7 +51,7 @@ class Player{
         }
       }
     }
-    else if (location.y <= height / 2 && velocity.y < 0) platform.scroll(-velocity.y);
+    else if (location.y <= height / 2 && velocity.y < 0) platform.scroll(-velocity.y * timeScale);
   }
   
   void collectItem(Platform platform){
@@ -79,11 +79,8 @@ class Player{
   void collectPower(Item item){
     Powerup power = (Powerup) item;
     String type = power.getType();
-    currentPower = type;
-  }
-  
-  void power(){
-    //if (currentPower.equals("timer")) return;
+    if (type.equals("jetpack")) velocity.y = -50;
+    if (type.equals("timer")) timeScale *= 0.9;
   }
   
   void changeDirection(){
