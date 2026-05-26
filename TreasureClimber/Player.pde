@@ -38,7 +38,7 @@ class Player{
     }
   }
   
-  void platformInteraction(Platform platform){
+  boolean platformInteraction(Platform platform){
     if (velocity.y > 0){
       float platformLeft = platform.location.x - platform.size / 2;
       float platformRight = platform.location.x + platform.size / 2;
@@ -48,10 +48,12 @@ class Player{
         if (location.y + radius >= platformTop && location.y < platformBottom){
           velocity.y = -15;
           location.y = platformTop - radius;
+          return true;
         }
       }
     }
     else if (location.y <= height / 2 && velocity.y < 0) platform.scroll(-velocity.y * timeScale);
+    return false;
   }
   
   void collectItem(Platform platform){
@@ -76,11 +78,14 @@ class Player{
     return c.getQuantity();
   }
   
-  void collectPower(Item item){
-    Powerup power = (Powerup) item;
+  void collectPower(Item i){
+    Powerup power = (Powerup) i;
     String type = power.getType();
     if (type.equals("jetpack")) velocity.y = -50;
     if (type.equals("timer")) timeScale *= 0.9;
+    //if (type.equals("magnet")){
+      //return;
+    //}
   }
   
   void changeDirection(){

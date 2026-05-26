@@ -27,13 +27,18 @@ void draw(){
   background(100, 50, 0);
   player.move();
   player.edgeBounce();
-  for (Platform platform : platforms){
-    player.platformInteraction(platform);
-    player.collectItem(platform);
-    platform.display();
+  for (int i = 0; i < platforms.size(); i++){
+    Platform p = platforms.get(i);
+    if (player.platformInteraction(p)){
+      if (p.getType().equals("trapdoor")) platforms.remove(i);
+      if (p.getType().equals("spikes")) reset();
+    }
+    player.collectItem(p);
+    p.display();
   }
   player.display();
   if (player.location.y > height) reset();
+  if (platforms.get(0).getY() > height) removePlatform(0);
   nextFloor();
   fill(255);
   textSize(20);
@@ -54,6 +59,10 @@ void nextFloor(){
     }
     for (Integer col : cols) platforms.add(new Platform(new PVector(col * colWidth + colWidth / 2, 0), currentFloor + 3, 0.4));
   }
+}
+
+void removePlatform(int i){
+  platforms.remove(i);
 }
 
 void keyPressed(){
