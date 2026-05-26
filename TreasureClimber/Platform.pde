@@ -22,17 +22,17 @@ class Platform{
     //else if (random(1) < 0.01) item = new Powerup(l.add(0, -20), "shield");
   }
   
-  void scroll(float amount){
-    this.location.y += amount;
-    if (item != null) item.location.y += amount;
-  }
-  
   Item getItem(){
     return item;
   }
   
   void removeItem(){
     item = null;
+  }
+  
+  void scroll(float amount){
+    this.location.y += amount;
+    if (item != null) item.location.y += amount;
   }
   
   void display(){
