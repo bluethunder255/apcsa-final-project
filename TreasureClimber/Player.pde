@@ -1,8 +1,8 @@
 class Player{
-  PVector location, velocity, gravity;
-  int radius = 30;
-  int coinsCollected = 0;
-  float timeScale = 1.0;
+  private PVector location, velocity, gravity;
+  private int radius = 30;
+  private int coinsCollected = 0;
+  private float timeScale = 1.0;
   
   Player(){
     location = new PVector(width / 2, height * 0.9);

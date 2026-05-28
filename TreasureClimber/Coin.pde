@@ -1,5 +1,5 @@
 class Coin extends Item{
-  int quantity;
+  private int quantity;
   
   Coin(PVector l, int q){
     super(l);
@@ -14,6 +14,6 @@ class Coin extends Item{
     stroke(0);
     strokeWeight(2);
     fill(255, 255, 0);
-    circle(location.x, location.y, 20);
+    circle(getX(), getY(), 20);
   }
 }

@@ -1,9 +1,9 @@
-Player player;
-ArrayList<Platform> platforms;
-int totalCols, currentFloor;
-float colWidth, floorHeight;
-int score, highScore;
-float coinChance;
+private Player player;
+private ArrayList<Platform> platforms;
+private int totalCols, currentFloor;
+private float colWidth, floorHeight;
+private int score, highScore;
+private float coinChance;
 
 void setup(){
   size(960, 720);
@@ -48,17 +48,30 @@ void draw(){
 }
 
 void nextFloor(){
+  //ArrayList<Integer> min = new ArrayList<>();
+  //int i = 1;
+  //while (true){
+    //Platform p = platforms.get(platforms.size() - i);
+    //int f = p.getFloor();
+    //if (f < currentFloor) break;
+    //if (f > 0) min.add(f - 1);
+    //min.add(f);
+    //if (f < totalCols - 1) min.add(f + 1);
+  //}
   Platform highest = platforms.get(platforms.size() - 1);
   if (highest.location.y > floorHeight){
     currentFloor++;
     ArrayList<Integer> cols = new ArrayList<>();
-    while (cols.size() < 1){
-      for (int i = 0; i < totalCols; i++){
-        if (random(1) < 0.6 && !(cols.contains(i))) cols.add(i);
-      }
-    }
-    for (Integer col : cols) platforms.add(new Platform(new PVector(col * colWidth + colWidth / 2, 0), currentFloor + 3, 0.4));
+    //while (true){
+      //for (int j = 0; j < totalCols; j++){
+        //if (random(1) < 0.6 && !(cols.contains(i))) cols.add(j);
+      //}
+      //for (int k = 0; k < cols.size(); k++){
+        //if (min.contains(cols.get(k))) break;
+      //}
+    //}
   }
+  //for (Integer col : cols) platforms.add(new Platform(new PVector(col * colWidth + colWidth / 2, 0), currentFloor + 3, 0.4));
 }
 
 void removePlatform(int i){
@@ -78,7 +91,7 @@ void reset(){
   colWidth = width / totalCols;
   currentFloor = 0;
   floorHeight = 175;
-  platforms.add(new Platform(new PVector(width / 2, height * 0.95), currentFloor, 0));
+  platforms.add(new Platform());
   for (int i = 0; i < totalCols * 3; i++){
     int col = i % totalCols;
     float x = col * colWidth + colWidth / 2;

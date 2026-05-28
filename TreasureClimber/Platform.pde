@@ -1,9 +1,9 @@
 class Platform{
-  PVector location;
-  int floor;
-  int size;
-  String type;
-  Item item;
+  private PVector location;
+  private int floor;
+  private int size;
+  private String type;
+  private Item item;
   
   Platform(){
     location = new PVector(width / 2, height * 0.95);
@@ -29,6 +29,10 @@ class Platform{
   
   float getY(){
     return location.y;
+  }
+  
+  int getFloor(){
+    return floor;
   }
   
   String getType(){
@@ -57,9 +61,9 @@ class Platform{
     if (type.equals("conveyor")) fill(0, 200, 255);
     rectMode(CENTER);
     rect(location.x, location.y, size, 10, 2);
-    //fill(255);
-    //textSize(10);
-    //text(floor, location.x, location.y);
+    fill(255);
+    textSize(10);
+    text(floor, location.x, location.y);
     if (item != null) item.display();
   }
 }

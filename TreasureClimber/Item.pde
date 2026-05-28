@@ -1,8 +1,16 @@
 abstract class Item{
-  PVector location;
+  private PVector location;
   
   Item(PVector l){
     location = l.copy();
+  }
+  
+  float getX(){
+    return location.x;
+  }
+  
+  float getY(){
+    return location.y;
   }
   
   void display(){};

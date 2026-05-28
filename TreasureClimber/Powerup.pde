@@ -1,5 +1,5 @@
 class Powerup extends Item{
-  String type;
+  private String type;
   
   Powerup(PVector l, String t){
     super(l);
@@ -17,6 +17,6 @@ class Powerup extends Item{
     if (type.equals("magnet")) fill(255, 0, 0);
     if (type.equals("shield")) fill(0, 255, 255);
     if (type.equals("timer")) fill(255, 128, 0);
-    circle(location.x, location.y, 20);
+    circle(getX(), getY(), 20);
   }
 }
