@@ -4,47 +4,53 @@ private int totalCols, currentFloor, generatingFloor;
 private float colWidth, floorHeight;
 private int score, highScore;
 private float coinChance;
+private boolean game;
 
 void setup(){
   size(960, 720);
-  reset();
+  background(100, 50, 0);
+  fill(0, 255, 0);
+  rectMode(CENTER);
+  rect(width / 2, height * 0.6, 200, 40, 3);
+  fill(0);
+  textSize(45);
+  textAlign(CENTER, CENTER);
+  text("Play", width / 2, height * 0.6);
 }
 
 void draw(){
-  background(100, 50, 0);
-  player.move();
-  player.edgeBounce();
-  for (int i = platforms.size() - 1; i >= 0; i--){
-    Platform p = platforms.get(i);
-    if (p.getY() > height){
-      platforms.remove(i);
-      continue;
-    }
-    if (player.platformInteraction(p)){
-      if (p.getFloor() > currentFloor) currentFloor = p.getFloor();
-      if (p.getType().equals("trapdoor")){
+  if (game){
+    background(100, 50, 0);
+    player.move();
+    player.edgeBounce();
+    for (int i = platforms.size() - 1; i >= 0; i--){
+      Platform p = platforms.get(i);
+      if (p.getY() > height){
         platforms.remove(i);
         continue;
       }
-      if (p.getType().equals("spikes")){
-        reset();
-        return;
+      if (player.platformInteraction(p)){
+        if (p.getFloor() > currentFloor) currentFloor = p.getFloor();
+        if (p.getType().equals("trapdoor")){
+          platforms.remove(i);
+          continue;
+        }
+        if (p.getType().equals("spikes")){
+          reset();
+          return;
+        }
       }
+      player.collectItem(p);
+      p.display();
     }
-    player.collectItem(p);
-    p.display();
+    player.display();
+    if (player.location.y > height){
+      reset();
+      return;
+    }
+    nextFloor();
+    drawUI();
   }
-  player.display();
-  if (player.location.y > height){
-    reset();
-    return;
-  }
-  nextFloor();
-  fill(255);
-  textSize(20);
-  text("Coins: " + player.getCoins(), 20, 40);
-  text("Floor: " + currentFloor, 20, 80);
-  text("Highscore: " + highScore, 800, 40);
 }
 
 void nextFloor(){
@@ -83,6 +89,20 @@ void nextFloor(){
 void keyPressed(){
   player.play();
   player.changeDirection();
+}
+
+void mouseClicked(){
+  game = true;
+  reset();
+}
+
+void drawUI(){
+  fill(255);
+  textSize(20);
+  textAlign(LEFT);
+  text("Coins: " + player.getCoins(), 20, 40);
+  text("Floor: " + currentFloor, 20, 80);
+  text("Highscore: " + highScore, 800, 40);
 }
 
 void reset(){
