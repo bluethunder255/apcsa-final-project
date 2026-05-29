@@ -4,22 +4,16 @@ private int totalCols, currentFloor, generatingFloor;
 private float colWidth, floorHeight;
 private int score, highScore;
 private float coinChance;
-private boolean game;
+private String screen;
 
 void setup(){
   size(960, 720);
-  background(100, 50, 0);
-  fill(0, 255, 0);
-  rectMode(CENTER);
-  rect(width / 2, height * 0.6, 200, 40, 3);
-  fill(0);
-  textSize(45);
-  textAlign(CENTER, CENTER);
-  text("Play", width / 2, height * 0.6);
+  screen = "title";
+  drawUI();
 }
 
 void draw(){
-  if (game){
+  if (screen.equals("game") && player != null){
     background(100, 50, 0);
     player.move();
     player.edgeBounce();
@@ -36,6 +30,7 @@ void draw(){
           continue;
         }
         if (p.getType().equals("spikes")){
+          screen = "fail";
           reset();
           return;
         }
@@ -45,6 +40,7 @@ void draw(){
     }
     player.display();
     if (player.location.y > height){
+      screen = "fail";
       reset();
       return;
     }
@@ -92,17 +88,39 @@ void keyPressed(){
 }
 
 void mouseClicked(){
-  game = true;
+  screen = "game";
   reset();
 }
 
 void drawUI(){
-  fill(255);
-  textSize(20);
-  textAlign(LEFT);
-  text("Coins: " + player.getCoins(), 20, 40);
-  text("Floor: " + currentFloor, 20, 80);
-  text("Highscore: " + highScore, 800, 40);
+  if (screen.equals("title")){
+    background(50);
+    fill(0, 255, 0);
+    rectMode(CENTER);
+    rect(width / 2, height * 0.6, 200, 40, 3);
+    fill(0);
+    textSize(45);
+    textAlign(CENTER, CENTER);
+    text("Play", width / 2, height * 0.6);
+  }
+  else if (screen.equals("game")){
+    fill(255);
+    textSize(20);
+    textAlign(LEFT);
+    text("Coins: " + player.getCoins(), 20, 40);
+    text("Floor: " + currentFloor, 20, 80);
+    text("Highscore: " + highScore, 800, 40);
+  }
+  else{
+    background(255);
+    fill(0, 255, 0);
+    rectMode(CENTER);
+    rect(width / 2, height * 0.6, 200, 40, 3);
+    fill(0);
+    textSize(45);
+    textAlign(CENTER, CENTER);
+    text("Game Over", width / 2, height * 0.6);
+  }
 }
 
 void reset(){
