@@ -69,9 +69,9 @@ class Platform{
     if (type.equals("conveyor")) fill(0, 200, 255);
     rectMode(CENTER);
     rect(location.x, location.y, size, 10, 2);
-    fill(255);
-    textSize(10);
-    text(floor, location.x, location.y);
+    //fill(255);
+    //textSize(10);
+    //text(floor, location.x, location.y);
     if (item != null) item.display();
   }
 }
