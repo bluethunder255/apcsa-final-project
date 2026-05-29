@@ -13,18 +13,26 @@ class Platform{
   }
   
   Platform(PVector l, int f, float c){
+    this(l, f, c, 0);
+  }
+  
+  Platform(PVector l, int f, float c, float s){
     location = l.copy();
     floor = f;
     size = int(random(30)) + 50;
-    int rand = int(random(10));
-    if (rand == 0) type = "spikes";
-    else if (rand < 2) type = "trapdoor";
+    float rand = random(1);
+    if (rand < s) type = "spikes";
+    else if (rand < s + 0.2) type = "trapdoor";
     else type = "normal";
     if (random(1) < c) item = new Coin(l.add(0, -20), 1);
     else if (random(1) < 0.01) item = new Powerup(l.add(0, -20), "jetpack");
     else if (random(1) < 0.01) item = new Powerup(l.add(0, -20), "timer");
     //else if (random(1) < 0.05) item = new Powerup(l.add(0, -20), "magnet");
     //else if (random(1) < 0.01) item = new Powerup(l.add(0, -20), "shield");
+  }
+  
+  float getX(){
+    return location.x;
   }
   
   float getY(){
