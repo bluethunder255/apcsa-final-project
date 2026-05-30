@@ -1,14 +1,15 @@
 String screen;
+PImage imgTitle, imgPlay;
+PImage imgPlayerLeft, imgPlayerRight;
+PImage imgNormal, imgTrapdoor, imgSpikes, imgConveyor;
+PImage imgCoin, imgJetpack, imgMagnet, imgShield, imgTimer;
+PImage imgBubble;
 Player player;
 ArrayList<Platform> platforms;
 int totalCols, currentFloor, generatingFloor;
 float colWidth, floorHeight;
 int highScore;
-//int progression;
-PImage imgTitle, imgPlay;
-PImage imgPlayerLeft, imgPlayerRight;
-PImage imgNormal, imgTrapdoor, imgSpikes, imgConveyor;
-PImage imgCoin, imgJetpack, imgMagnet, imgShield, imgTimer;
+int progression;
 
 void setup(){
   size(960, 720);
@@ -25,6 +26,7 @@ void setup(){
   imgMagnet = loadImage("sprites/magnet.png");
   imgShield = loadImage("sprites/shield.png");
   imgTimer = loadImage("sprites/timer.png");
+  imgBubble = loadImage("sprites/bubble.png");
   screen = "title";
 }
 
@@ -32,6 +34,8 @@ void draw(){
   if (screen.equals("game")){
     if (player == null) reset();
     background(50, 25, 0);
+    progression = currentFloor / 25;
+    player.progress(progression);
     player.move();
     player.edgeBounce();
     for (int i = platforms.size() - 1; i >= 0; i--){
@@ -47,8 +51,11 @@ void draw(){
           continue;
         }
         if (p.getType().equals("spikes")){
-          gameOver();
-          return;
+          if (!player.shielded()) gameOver();
+          player.popShield();
+        }
+        if (p.getType().equals("conveyor")){
+          player.changeDirection();
         }
       }
       player.collectItem(p);
@@ -91,13 +98,20 @@ void nextFloor(){
       int safe = int(random(left, right + 1));
       if (!spawns.contains(safe)){
         float targetX = safe * colWidth + colWidth / 2;
-        platforms.add(new Platform(new PVector(targetX, targetY), generatingFloor, 0.4));
+        platforms.add(new Platform(new PVector(targetX, targetY), generatingFloor, 1));
         spawns.add(safe);
       }
     }
     for (int i = 0; i < totalCols; i++){
       float targetX = i * colWidth + colWidth / 2;
-      if (!spawns.contains(i) && random(1) < 0.4) platforms.add(new Platform(new PVector(targetX, targetY), generatingFloor, 0.4));
+      if (!spawns.contains(i)){
+        float rand = random(1);
+        if (progression == 0 && rand < 0.4) platforms.add(new Platform(new PVector(targetX, targetY), generatingFloor, progression));
+        else if (progression <= 1 && rand < 0.3) platforms.add(new Platform(new PVector(targetX, targetY), generatingFloor, progression));
+        else if (progression <= 3 && rand < 0.2) platforms.add(new Platform(new PVector(targetX, targetY), generatingFloor, progression));
+        else if (progression == 4) platforms.add(new Platform(new PVector(targetX, targetY), generatingFloor, progression));
+        else if (progression >= 5 && rand < 0.1) platforms.add(new Platform(new PVector(targetX, targetY), generatingFloor, progression));
+      }
     }
   }
 }
@@ -133,6 +147,7 @@ void drawUI(){
     text("High Score: " + highScore, width - 20, 20);
   }
   else if (screen.equals("fail")){
+    background(25, 0, 0);
     fill(0);
     rectMode(CENTER);
     rect(width / 2, height * 0.5, 300, 400, 5);
@@ -168,6 +183,7 @@ void reset(){
     int col = i % totalCols;
     float x = col * colWidth + colWidth / 2;
     float y = height * 0.7 - i / totalCols * floorHeight;
-    platforms.add(new Platform(new PVector(x, y), i / totalCols + 1, 0.4));
+    platforms.add(new Platform(new PVector(x, y), i / totalCols + 1, 0));
   }
+  progression = 0;
 }

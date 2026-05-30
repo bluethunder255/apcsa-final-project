@@ -12,25 +12,41 @@ class Platform{
     type = "normal";
   }
   
-  Platform(PVector l, int f, float c){
-    this(l, f, c, 0);
-  }
-  
-  Platform(PVector l, int f, float c, float s){
+  Platform(PVector l, int f, int p){
     location = l.copy();
     floor = f;
     size = int(random(30)) + 45;
-    float platformRand = random(1);
-    if (platformRand < s) type = "spikes";
-    else if (platformRand < s + 0.2) type = "trapdoor";
-    else type = "normal";
+    if (p == 0) type = "normal";
+    else{
+      float platformRand = random(1);
+      if (p == 1){
+        if (platformRand < 0.3) type = "trapdoor";
+        else type = "normal";
+      }
+      else if (p == 2){
+        if (platformRand < 0.2) type = "spikes";
+        else if (platformRand < 0.3) type = "conveyor";
+        else if (platformRand < 0.5) type = "trapdoor";
+        else type = "normal";
+      }
+      else if (p == 3){
+        if (platformRand < 0.3) type = "spikes";
+        else if (platformRand < 0.5) type = "conveyor";
+        else if (platformRand < 0.9) type = "trapdoor";
+        else type = "normal";
+      }
+      else{
+        if (platformRand < 0.5) type = "conveyor";
+        else type = "spikes";
+      }
+    }
     PVector itemPos = l.add(0, -20);
     float itemRand = random(1);
-    if (itemRand < c) item = new Coin(itemPos, 1);
-    else if (itemRand < c + 0.01) item = new Powerup(itemPos, "jetpack");
-    else if (itemRand < c + 0.02) item = new Powerup(itemPos, "timer");
-    else if (itemRand < c + 0.03) item = new Powerup(itemPos, "magnet");
-    else if (itemRand < c + 0.04) item = new Powerup(itemPos, "shield");
+    if (itemRand < 0.4) item = new Coin(itemPos, 1);
+    else if (itemRand < 0.41) item = new Powerup(itemPos, "jetpack");
+    else if (itemRand < 0.42) item = new Powerup(itemPos, "timer");
+    else if (itemRand < 0.43) item = new Powerup(itemPos, "magnet");
+    else if (itemRand < 0.44) item = new Powerup(itemPos, "shield");
   }
   
   float getX(){
@@ -68,9 +84,9 @@ class Platform{
     else if (type.equals("trapdoor")) image(imgTrapdoor, location.x, location.y, size, 10);
     else if (type.equals("spikes")) image(imgSpikes, location.x, location.y, size, 10);
     else if (type.equals("conveyor")) image(imgConveyor, location.x, location.y, size, 10);
-    //fill(255);
-    //textSize(10);
-    //text(floor, location.x, location.y);
+    fill(255);
+    textSize(10);
+    text(floor, location.x, location.y);
     if (item != null) item.display();
   }
 }
