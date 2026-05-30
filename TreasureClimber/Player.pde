@@ -18,12 +18,10 @@ class Player{
     return coinsCollected;
   }
   
-  boolean shielded(){
-    return hasShield;
-  }
-  
-  void popShield(){
+  boolean popShield(){
+    boolean popped = hasShield;
     hasShield = false;
+    return popped;
   }
   
   void play(){
@@ -61,7 +59,7 @@ class Player{
       float platformTop = p.location.y - 5;
       float platformBottom = p.location.y + 5;
       if (location.x + radius > platformLeft && location.x - radius < platformRight){
-        if (location.y + radius >= platformTop && location.y < platformBottom){
+        if (location.y + radius > platformTop && location.y < platformBottom){
           velocity.y = -15;
           location.y = platformTop - radius;
           return true;

@@ -51,8 +51,7 @@ void draw(){
           continue;
         }
         if (p.getType().equals("spikes")){
-          if (!player.shielded()) gameOver();
-          player.popShield();
+          if (!player.popShield()) gameOver();
         }
         if (p.getType().equals("conveyor")){
           player.changeDirection();
@@ -124,7 +123,19 @@ void keyPressed(){
 }
 
 void mouseClicked(){
-  if (!screen.equals("game")){
+  if (screen.equals("title")){
+    float bWidth = 275;
+    float bHeight = 60;
+    float bX = width / 2;
+    float bY = height * 0.6;
+    if (mouseX >= bX - bWidth / 2 && mouseX <= bX + bWidth / 2){
+      if (mouseY >= bY - bHeight / 2 && mouseY <= bY + bHeight / 2){
+        screen = "game";
+        reset();
+      }
+    }
+  }
+  else if (screen.equals("fail")){
     screen = "game";
     reset();
   }
