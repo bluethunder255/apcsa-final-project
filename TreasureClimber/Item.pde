@@ -13,5 +13,5 @@ abstract class Item{
     return location.y;
   }
   
-  void display(){};
+  abstract void display();
 }

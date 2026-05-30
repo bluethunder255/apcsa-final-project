@@ -1,20 +1,37 @@
-private Player player;
-private ArrayList<Platform> platforms;
-private int totalCols, currentFloor, generatingFloor;
-private float colWidth, floorHeight;
-private int score, highScore;
-private float coinChance;
-private String screen;
+String screen;
+Player player;
+ArrayList<Platform> platforms;
+int totalCols, currentFloor, generatingFloor;
+float colWidth, floorHeight;
+int highScore;
+//int progression;
+PImage imgTitle, imgPlay;
+PImage imgPlayerLeft, imgPlayerRight;
+PImage imgNormal, imgTrapdoor, imgSpikes, imgConveyor;
+PImage imgCoin, imgJetpack, imgMagnet, imgShield, imgTimer;
 
 void setup(){
   size(960, 720);
+  imgTitle = loadImage("sprites/title.png");
+  imgPlay = loadImage("sprites/play.png");
+  imgPlayerLeft = loadImage("sprites/player-left.png");
+  imgPlayerRight = loadImage("sprites/player-right.png");
+  imgNormal = loadImage("sprites/platform-normal.png");
+  imgTrapdoor = loadImage("sprites/platform-trapdoor.png");
+  imgSpikes = loadImage("sprites/platform-spikes.png");
+  imgConveyor = loadImage("sprites/platform-conveyor.png");
+  imgCoin = loadImage("sprites/coin.png");
+  imgJetpack = loadImage("sprites/jetpack.png");
+  imgMagnet = loadImage("sprites/magnet.png");
+  imgShield = loadImage("sprites/shield.png");
+  imgTimer = loadImage("sprites/timer.png");
   screen = "title";
-  drawUI();
 }
 
 void draw(){
-  if (screen.equals("game") && player != null){
-    background(100, 50, 0);
+  if (screen.equals("game")){
+    if (player == null) reset();
+    background(50, 25, 0);
     player.move();
     player.edgeBounce();
     for (int i = platforms.size() - 1; i >= 0; i--){
@@ -30,8 +47,7 @@ void draw(){
           continue;
         }
         if (p.getType().equals("spikes")){
-          screen = "fail";
-          reset();
+          gameOver();
           return;
         }
       }
@@ -40,13 +56,17 @@ void draw(){
     }
     player.display();
     if (player.location.y > height){
-      screen = "fail";
-      reset();
+      gameOver();
       return;
     }
     nextFloor();
-    drawUI();
   }
+  drawUI();
+}
+
+void gameOver(){
+  screen = "fail";
+  if (player != null) highScore = max(highScore, currentFloor + player.getCoins());
 }
 
 void nextFloor(){
@@ -83,48 +103,59 @@ void nextFloor(){
 }
 
 void keyPressed(){
-  player.play();
-  player.changeDirection();
+  if (screen.equals("game") && player != null){
+    player.play();
+    player.changeDirection();
+  }
 }
 
 void mouseClicked(){
-  screen = "game";
-  reset();
+  if (!screen.equals("game")){
+    screen = "game";
+    reset();
+  }
 }
 
 void drawUI(){
   if (screen.equals("title")){
     background(50);
-    fill(0, 255, 0);
-    rectMode(CENTER);
-    rect(width / 2, height * 0.6, 200, 40, 3);
-    fill(0);
-    textSize(45);
-    textAlign(CENTER, CENTER);
-    text("Play", width / 2, height * 0.6);
+    imageMode(CENTER);
+    image(imgTitle, width / 2, height * 0.2);
+    image(imgPlay, width / 2, height * 0.6);
   }
-  else if (screen.equals("game")){
+  else if (screen.equals("game") && player != null){
     fill(255);
     textSize(20);
-    textAlign(LEFT);
-    text("Coins: " + player.getCoins(), 20, 40);
-    text("Floor: " + currentFloor, 20, 80);
-    text("Highscore: " + highScore, 800, 40);
+    textAlign(LEFT, TOP);
+    text("Coins: " + player.getCoins(), 20, 20);
+    text("Floor: " + currentFloor, 20, 50);
+    textAlign(RIGHT, TOP);
+    text("High Score: " + highScore, width - 20, 20);
   }
-  else{
-    background(255);
-    fill(0, 255, 0);
-    rectMode(CENTER);
-    rect(width / 2, height * 0.6, 200, 40, 3);
+  else if (screen.equals("fail")){
     fill(0);
-    textSize(45);
-    textAlign(CENTER, CENTER);
-    text("Game Over", width / 2, height * 0.6);
+    rectMode(CENTER);
+    rect(width / 2, height * 0.5, 300, 400, 5);
+    fill(255);
+    textAlign(CENTER);
+    textSize(40);
+    text("Game Over", width / 2, height * 0.3);
+    textAlign(LEFT);
+    textSize(30);
+    text("Coins:", width * 0.4, height * 0.4);
+    text("Floor:", width * 0.4, height * 0.5);
+    text("Score:", width * 0.4, height * 0.6);
+    textAlign(RIGHT);
+    text(player.getCoins(), width * 0.6, height * 0.4);
+    text(currentFloor, width * 0.6, height * 0.5);
+    text(player.getCoins() + currentFloor, width * 0.6, height * 0.6);
+    textAlign(CENTER);
+    textSize(20);
+    text("Click anywhere to restart", width * 0.5, height * 0.7);
   }
 }
 
 void reset(){
-  if (player != null) highScore = max(highScore, currentFloor + player.getCoins());
   player = new Player();
   platforms = new ArrayList<>();
   totalCols = 7;
@@ -139,5 +170,4 @@ void reset(){
     float y = height * 0.7 - i / totalCols * floorHeight;
     platforms.add(new Platform(new PVector(x, y), i / totalCols + 1, 0.4));
   }
-  score = 0;
 }

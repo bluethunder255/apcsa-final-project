@@ -56,8 +56,8 @@ class Player{
     return false;
   }
   
-  void collectItem(Platform platform){
-    Item i = platform.getItem();
+  void collectItem(Platform p){
+    Item i = p.getItem();
     if (i != null){
       float iLeft = i.location.x - 10;
       float iRight = i.location.x + 10;
@@ -67,7 +67,7 @@ class Player{
         if (location.y + radius >= iTop && location.y < iBottom){
           if (i instanceof Coin) coinsCollected += collectCoins(i);
           if (i instanceof Powerup) collectPower(i);
-          platform.removeItem();
+          p.removeItem();
         }
       }
     }
@@ -83,9 +83,12 @@ class Player{
     String type = power.getType();
     if (type.equals("jetpack")) velocity.y = -50;
     if (type.equals("timer")) timeScale *= 0.9;
-    //if (type.equals("magnet")){
-      //return;
-    //}
+    if (type.equals("magnet")){
+      return;
+    }
+    if (type.equals("shield")){
+      return;
+    }
   }
   
   void changeDirection(){
@@ -93,9 +96,8 @@ class Player{
   }
   
   void display(){
-    stroke(0);
-    strokeWeight(2);
-    fill(0, 200, 0);
-    circle(location.x, location.y, radius * 2);
+    imageMode(CENTER);
+    if (velocity.x < 0) image(imgPlayerLeft, location.x, location.y);
+    else image(imgPlayerRight, location.x, location.y);
   }
 }

@@ -19,16 +19,18 @@ class Platform{
   Platform(PVector l, int f, float c, float s){
     location = l.copy();
     floor = f;
-    size = int(random(30)) + 50;
-    float rand = random(1);
-    if (rand < s) type = "spikes";
-    else if (rand < s + 0.2) type = "trapdoor";
+    size = int(random(30)) + 45;
+    float platformRand = random(1);
+    if (platformRand < s) type = "spikes";
+    else if (platformRand < s + 0.2) type = "trapdoor";
     else type = "normal";
-    if (random(1) < c) item = new Coin(l.add(0, -20), 1);
-    else if (random(1) < 0.01) item = new Powerup(l.add(0, -20), "jetpack");
-    else if (random(1) < 0.01) item = new Powerup(l.add(0, -20), "timer");
-    //else if (random(1) < 0.05) item = new Powerup(l.add(0, -20), "magnet");
-    //else if (random(1) < 0.01) item = new Powerup(l.add(0, -20), "shield");
+    PVector itemPos = l.add(0, -20);
+    float itemRand = random(1);
+    if (itemRand < c) item = new Coin(itemPos, 1);
+    else if (itemRand < c + 0.01) item = new Powerup(itemPos, "jetpack");
+    else if (itemRand < c + 0.02) item = new Powerup(itemPos, "timer");
+    else if (itemRand < c + 0.03) item = new Powerup(itemPos, "magnet");
+    else if (itemRand < c + 0.04) item = new Powerup(itemPos, "shield");
   }
   
   float getX(){
@@ -61,14 +63,11 @@ class Platform{
   }
   
   void display(){
-    stroke(0);
-    strokeWeight(2);
-    if (type.equals("normal")) fill(50, 25, 0);
-    if (type.equals("trapdoor")) fill(200, 100, 0);
-    if (type.equals("spikes")) fill(100, 100, 100);
-    if (type.equals("conveyor")) fill(0, 200, 255);
-    rectMode(CENTER);
-    rect(location.x, location.y, size, 10, 2);
+    imageMode(CENTER);
+    if (type.equals("normal")) image(imgNormal, location.x, location.y, size, 10);
+    else if (type.equals("trapdoor")) image(imgTrapdoor, location.x, location.y, size, 10);
+    else if (type.equals("spikes")) image(imgSpikes, location.x, location.y, size, 10);
+    else if (type.equals("conveyor")) image(imgConveyor, location.x, location.y, size, 10);
     //fill(255);
     //textSize(10);
     //text(floor, location.x, location.y);
