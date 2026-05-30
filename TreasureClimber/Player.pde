@@ -97,7 +97,13 @@ class Player{
     String type = power.getType();
     if (type.equals("jetpack")) velocity.y = -50;
     if (type.equals("magnet")){
-      return;
+      for (Platform p : platforms){
+        Item platformItem = p.getItem();
+        if (platformItem != null && platformItem instanceof Coin){
+          coinsCollected += collectCoins(platformItem);
+          p.removeItem();
+        }
+      }
     }
     if (type.equals("shield")) hasShield = true;
     if (type.equals("timer")) timersCollected++;
