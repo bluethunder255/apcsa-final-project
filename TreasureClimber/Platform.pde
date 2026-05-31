@@ -84,9 +84,9 @@ class Platform{
     else if (type.equals("trapdoor")) image(imgTrapdoor, location.x, location.y, size, 10);
     else if (type.equals("spikes")) image(imgSpikes, location.x, location.y, size, 10);
     else if (type.equals("conveyor")) image(imgConveyor, location.x, location.y, size, 10);
-    //fill(255);
-    //textSize(10);
-    //text(floor, location.x, location.y);
+    fill(255);
+    textSize(10);
+    text(floor, location.x, location.y);
     if (item != null) item.display();
   }
 }

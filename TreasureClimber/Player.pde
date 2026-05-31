@@ -21,6 +21,7 @@ class Player{
   boolean popShield(){
     boolean popped = hasShield;
     hasShield = false;
+    sfxSpikes.play();
     return popped;
   }
   
@@ -89,6 +90,7 @@ class Player{
   
   int collectCoins(Item i){
     Coin c = (Coin) i;
+    if (!sfxCoin.isPlaying()) sfxCoin.play();
     return c.getQuantity();
   }
   
@@ -107,6 +109,7 @@ class Player{
     }
     if (type.equals("shield")) hasShield = true;
     if (type.equals("timer")) timersCollected++;
+    sfxPower.play();
   }
   
   void changeDirection(){

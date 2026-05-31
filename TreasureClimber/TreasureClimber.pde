@@ -1,18 +1,22 @@
+import processing.sound.*;
+
 String screen;
-PImage imgTitle, imgPlay;
-PImage imgPlayerLeft, imgPlayerRight;
-PImage imgNormal, imgTrapdoor, imgSpikes, imgConveyor;
-PImage imgCoin, imgJetpack, imgMagnet, imgShield, imgTimer;
-PImage imgBubble;
 Player player;
 ArrayList<Platform> platforms;
 int totalCols, currentFloor, generatingFloor;
 float colWidth, floorHeight;
 int highScore;
 int progression;
+PImage imgTitle, imgPlay;
+PImage imgPlayerLeft, imgPlayerRight;
+PImage imgNormal, imgTrapdoor, imgSpikes, imgConveyor;
+PImage imgCoin, imgJetpack, imgMagnet, imgShield, imgTimer;
+PImage imgBubble;
+SoundFile sfxMusic, sfxBounce, sfxTrapdoor, sfxSpikes, sfxConveyor, sfxCoin, sfxPower, sfxFail;
 
 void setup(){
   size(960, 720);
+  screen = "title";
   imgTitle = loadImage("sprites/title.png");
   imgPlay = loadImage("sprites/play.png");
   imgPlayerLeft = loadImage("sprites/player-left.png");
@@ -27,14 +31,24 @@ void setup(){
   imgShield = loadImage("sprites/shield.png");
   imgTimer = loadImage("sprites/timer.png");
   imgBubble = loadImage("sprites/bubble.png");
-  screen = "title";
+  sfxMusic = new SoundFile(this, "sounds/music.mp3");
+  sfxBounce = new SoundFile(this, "sounds/bounce.mp3");
+  sfxTrapdoor = new SoundFile(this, "sounds/trapdoor.mp3");
+  sfxSpikes = new SoundFile(this, "sounds/spikes.mp3");
+  sfxConveyor = new SoundFile(this, "sounds/conveyor.mp3");
+  sfxCoin = new SoundFile(this, "sounds/coin.mp3");
+  sfxPower = new SoundFile(this, "sounds/power.mp3");
+  sfxFail = new SoundFile(this, "sounds/fail.mp3");
 }
 
 void draw(){
   if (screen.equals("game")){
     if (player == null) reset();
     background(50, 25, 0);
+    int oldProgression = progression;
     progression = currentFloor / 25;
+    float rate = 1 + 0.05 * progression;
+    if (progression != oldProgression && sfxMusic.isPlaying()) sfxMusic.rate(rate);
     player.progress(progression);
     player.move();
     player.edgeBounce();
@@ -45,15 +59,18 @@ void draw(){
         continue;
       }
       if (player.platformInteraction(p)){
+        sfxBounce.play();
         if (p.getFloor() > currentFloor) currentFloor = p.getFloor();
         if (p.getType().equals("trapdoor")){
           platforms.remove(i);
+          sfxTrapdoor.play();
           continue;
         }
         if (p.getType().equals("spikes")){
           if (!player.popShield()) gameOver();
         }
         if (p.getType().equals("conveyor")){
+          sfxConveyor.play();
           player.changeDirection();
         }
       }
@@ -71,6 +88,8 @@ void draw(){
 }
 
 void gameOver(){
+  sfxMusic.stop();
+  sfxFail.play();
   screen = "fail";
   if (player != null) highScore = max(highScore, currentFloor + player.getCoins());
 }
@@ -182,6 +201,7 @@ void drawUI(){
 }
 
 void reset(){
+  sfxMusic.loop(1);
   player = new Player();
   platforms = new ArrayList<>();
   totalCols = 7;
